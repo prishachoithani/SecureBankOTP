@@ -1,8 +1,5 @@
 package com.securebank.fraud;
-
 import java.time.LocalDateTime;
-
-/** Represents one fraud rule firing on one transaction; persisted for audit purposes. */
 public class FraudAlert {
     private final String transactionId;
     private final String ruleTriggered;
