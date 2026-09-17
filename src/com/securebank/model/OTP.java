@@ -1,13 +1,7 @@
 package com.securebank.model;
-
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
-/**
- * A one-time password bound to a specific transaction.
- * Carries its own expiry timestamp; OTPManager runs a background
- * thread that invalidates it once the window elapses.
- */
 public class OTP {
     private final String code;
     private final String transactionId;
@@ -60,11 +54,6 @@ public class OTP {
         return consumed;
     }
 
-    /**
-     * Atomically consumes the OTP so it cannot be used twice, even if two
-     * threads try to verify it at the same instant (protects against
-     * OTP-replay style race conditions).
-     */
     public synchronized boolean tryConsume() {
         if (consumed || expired) {
             return false;
