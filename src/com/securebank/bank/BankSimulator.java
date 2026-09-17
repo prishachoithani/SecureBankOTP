@@ -35,10 +35,6 @@ public class BankSimulator {
         return accounts.get(accountNumber);
     }
 
-    /**
-     * Step 1 of a transfer: creates a PENDING_OTP transaction and issues
-     * an OTP for it. Nothing moves yet -- funds only move after verifyAndComplete().
-     */
     public Transaction initiateTransfer(String sourceAcc, String destAcc, double amount, String originDevice) {
         Transaction txn = new Transaction(sourceAcc, destAcc, amount, originDevice);
         pendingTransactions.put(txn.getTransactionId(), txn);
