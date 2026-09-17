@@ -10,14 +10,6 @@ import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-/**
- * AES-based encryption utility used to protect exported transaction
- * history on disk (Java I/O streams requirement). Uses only the JDK's
- * built-in javax.crypto package, so no external dependency is needed.
- *
- * The key is generated once and persisted (Base64-encoded) to
- * data/secret.key so encrypted files can be decrypted across runs.
- */
 public class EncryptionUtil {
 
     private static final String ALGORITHM = "AES";
@@ -45,7 +37,6 @@ public class EncryptionUtil {
         return key;
     }
 
-    /** Encrypts plain text and writes the result (Base64) to the given file. */
     public void encryptToFile(String plainText, String filePath) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -57,7 +48,6 @@ public class EncryptionUtil {
         }
     }
 
-    /** Reads Base64-encrypted content from a file and decrypts it back to plain text. */
     public String decryptFromFile(String filePath) throws Exception {
         String encodedText;
         try (FileInputStream fis = new FileInputStream(filePath);
