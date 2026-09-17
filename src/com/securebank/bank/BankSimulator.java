@@ -64,8 +64,6 @@ public class BankSimulator {
 
         synchronized (first) {
             synchronized (second) {
-                // Captured *before* withdraw() so this transaction can't inflate
-                // its own baseline and dodge HighAmountRule (see FraudRule).
                 txn.setPriorAverageAmount(source.getAverageTransactionAmount());
                 source.withdraw(txn.getAmount());
                 dest.deposit(txn.getAmount());
@@ -86,11 +84,7 @@ public class BankSimulator {
         otpManager.shutdown();
         fraudEngine.shutdown();
     }
-
-    /**
-     * DEMO-ONLY: stands in for the SMS/push channel that would deliver the
-     * OTP to the user's phone in a real deployment. See OTPManager.peekCodeForDemo().
-     */
+    
     public String peekOtpForDemo(String transactionId) {
         return otpManager.peekCodeForDemo(transactionId);
     }
