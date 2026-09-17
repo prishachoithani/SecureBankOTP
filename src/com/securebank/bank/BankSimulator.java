@@ -12,15 +12,6 @@ import com.securebank.util.BankLogger;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Central orchestrator: registers accounts, initiates OTP-protected
- * transfers, verifies OTPs, and routes completed transactions to the
- * FraudDetectionEngine for background screening.
- *
- * This is the class a caller (Main, or a future UI/API layer) actually
- * talks to -- it hides the plumbing between OTPManager, FraudDetectionEngine
- * and the DAOs (Facade-ish pattern).
- */
 public class BankSimulator {
 
     private final Map<String, Account> accounts = new ConcurrentHashMap<>();
