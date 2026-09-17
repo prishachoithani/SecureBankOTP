@@ -59,8 +59,6 @@ public class BankSimulator {
         Account source = accounts.get(txn.getSourceAccount());
         Account dest = accounts.get(txn.getDestinationAccount());
 
-        // Lock ordering by account number prevents deadlock if two transfers
-        // between the same pair of accounts run concurrently in opposite directions.
         Account first = source.getAccountNumber().compareTo(dest.getAccountNumber()) < 0 ? source : dest;
         Account second = first == source ? dest : source;
 
