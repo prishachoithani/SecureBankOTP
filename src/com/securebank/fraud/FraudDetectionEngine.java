@@ -11,13 +11,6 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Runs as its own daemon thread and continuously pulls completed
- * transactions off a BlockingQueue (producer/consumer pattern), running
- * every registered FraudRule against each one. This decouples fraud
- * screening from the main transaction path so screening never blocks
- * a legitimate transfer from completing.
- */
 public class FraudDetectionEngine extends Thread {
 
     private final BlockingQueue<Transaction> incomingTransactions = new LinkedBlockingQueue<>();
