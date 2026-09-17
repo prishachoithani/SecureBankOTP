@@ -41,7 +41,7 @@ public class BankSimulator {
         OTP otp = otpManager.issueOTP(txn.getTransactionId());
         BankLogger.info("Transfer initiated: " + txn.getTransactionId() +
                 " | OTP sent to " + accounts.get(sourceAcc).getOwner().getPhoneNumber());
-        // In a real bank this OTP would be sent via SMS; we expose it here for the demo.
+        
         return txn;
     }
 
