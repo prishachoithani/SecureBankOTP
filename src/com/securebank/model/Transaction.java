@@ -1,13 +1,7 @@
 package com.securebank.model;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Immutable record of a single money transfer attempt.
- * 'status' is updated as the transaction moves through OTP verification
- * and fraud screening, so the object doubles as a small state machine.
- */
 public class Transaction {
 
     public enum Status {
@@ -65,13 +59,6 @@ public class Transaction {
         this.status = status;
     }
 
-    /**
-     * The source account's average transaction amount *before* this
-     * transaction was applied. Captured at withdrawal time so fraud
-     * rules can judge "is this unusually large?" against the account's
-     * prior behavior, without the current (possibly fraudulent)
-     * transaction skewing its own baseline.
-     */
     public double getPriorAverageAmount() {
         return priorAverageAmount;
     }
