@@ -45,10 +45,6 @@ public class BankSimulator {
         return txn;
     }
 
-    /**
-     * Step 2: verifies the OTP, and if valid, atomically moves funds.
-     * The completed transaction is then queued for fraud screening.
-     */
     public void verifyAndComplete(String transactionId, String submittedOtp)
             throws InvalidOTPException, OTPExpiredException, OTPLockedException, InsufficientFundsException {
 
