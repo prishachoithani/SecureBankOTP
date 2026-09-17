@@ -5,19 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Represents a bank account.
- * Balance mutations are synchronized so that concurrent transfer threads
- * cannot cause race conditions (e.g., two withdrawals reading the same
- * "before" balance and both succeeding when only one should).
- */
 public class Account {
     private final String accountNumber;
     private final User owner;
     private double balance;
     private final List<Transaction> history;
 
-    // Running average of transaction amounts, used by fraud rules.
     private double averageTransactionAmount = 0.0;
     private int transactionCount = 0;
 
@@ -44,11 +37,6 @@ public class Account {
         return averageTransactionAmount;
     }
 
-    /**
-     * Thread-safe withdrawal. Synchronized on 'this' so two threads
-     * attempting to drain the same account concurrently cannot both
-     * pass the balance check before either has deducted funds.
-     */
     public synchronized void withdraw(double amount) throws InsufficientFundsException {
         if (amount > balance) {
             throw new InsufficientFundsException(
