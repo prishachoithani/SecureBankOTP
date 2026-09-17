@@ -72,7 +72,6 @@ public class OTPManager {
         }
 
         if (!otp.tryConsume()) {
-            // Someone else consumed it in the instant between our checks above.
             throw new InvalidOTPException("OTP for transaction " + transactionId + " was already used.");
         }
 
