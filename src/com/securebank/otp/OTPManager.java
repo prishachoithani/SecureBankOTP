@@ -12,19 +12,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Issues, tracks and expires OTPs for pending transactions.
- *
- * Each OTP is scheduled to auto-expire on a background thread pool
- * (ScheduledExecutorService) after its validity window -- this is the
- * multithreading requirement in action: expiry does not depend on the
- * user or the main thread polling anything.
- *
- * verify() is synchronized per-OTP via OTP.tryConsume(), so a real-world
- * attack pattern -- an attacker and the legitimate user both racing to
- * submit the same intercepted OTP -- cannot result in the OTP being
- * accepted twice.
- */
 public class OTPManager {
 
     private static final int DEFAULT_VALIDITY_SECONDS = 30;
@@ -38,7 +25,6 @@ public class OTPManager {
                 return t;
             });
 
-    /** Generates a new OTP for a transaction and schedules its auto-expiry. */
     public OTP issueOTP(String transactionId) {
         OTP otp = new OTP(transactionId, DEFAULT_VALIDITY_SECONDS, DEFAULT_MAX_ATTEMPTS);
         activeOtps.put(transactionId, otp);
@@ -54,11 +40,6 @@ public class OTPManager {
         return otp;
     }
 
-    /**
-     * Runs on a background thread once an OTP's validity window elapses.
-     * Marks it expired and removes it from the active map so a stale
-     * code can never be verified afterwards.
-     */
     private void expireIfUnconsumed(OTP otp) {
         if (!otp.isConsumed()) {
             otp.markExpired();
@@ -67,11 +48,6 @@ public class OTPManager {
         }
     }
 
-    /**
-     * Verifies a submitted OTP code against the one on record.
-     * Throws distinct exception types so callers (and log output) can tell
-     * apart "wrong code", "expired", and "too many attempts" failures.
-     */
     public void verify(String transactionId, String submittedCode)
             throws InvalidOTPException, OTPExpiredException, OTPLockedException {
 
@@ -108,12 +84,6 @@ public class OTPManager {
         expiryScheduler.shutdownNow();
     }
 
-    /**
-     * DEMO-ONLY hook: exposes the current OTP code for a transaction so
-     * this project can be run end-to-end from a single console app without
-     * a real SMS gateway. A production system would never expose this --
-     * the code would only ever leave the server via the SMS/push channel.
-     */
     public String peekCodeForDemo(String transactionId) {
         OTP otp = activeOtps.get(transactionId);
         return otp == null ? null : otp.getCode();
