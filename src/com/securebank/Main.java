@@ -1,5 +1,4 @@
-package com.securebank;
-
+package com.securebank
 import com.securebank.bank.BankSimulator;
 import com.securebank.exceptions.*;
 import com.securebank.model.Account;
@@ -8,23 +7,10 @@ import com.securebank.model.User;
 import com.securebank.persistence.DatabaseManager;
 import com.securebank.security.EncryptionUtil;
 import com.securebank.util.BankLogger;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.CountDownLatch;
 
-/**
- * Demo entry point. Walks through:
- *   1. A normal, legitimate OTP-verified transfer.
- *   2. A simulated OTP-fraud attempt (an unusually large transfer,
- *      right after a small legitimate one) that
- *      the fraud engine flags AFTER completion (screening is async by design --
- *      in a production system this would instead feed a hold/reversal workflow).
- *   3. A concurrency stress test: multiple threads hammering the same
- *      account simultaneously, proving the synchronized withdraw() prevents
- *      the balance from ever going negative or being double-spent.
- *   4. Encrypting the final transaction history to disk.
- */
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -50,7 +36,6 @@ public class Main {
         System.out.println("\n=== SCENARIO 3: Concurrency stress test on ACC1002 ===");
         concurrencyStressTest(bank, acc2);
 
-        // Give the async fraud thread a moment to finish processing its queue.
         Thread.sleep(500);
 
         System.out.println("\n=== Final balances ===");
@@ -68,22 +53,17 @@ public class Main {
         Transaction txn = bank.initiateTransfer(
                 from.getAccountNumber(), to.getAccountNumber(), 2000.0, "device-priya-iphone");
 
-        // Stands in for the user reading the OTP off their SMS/push notification.
         String code = bank.peekOtpForDemo(txn.getTransactionId());
         bank.verifyAndComplete(txn.getTransactionId(), code);
     }
 
     private static void suspiciousTransfer(BankSimulator bank, Account from, Account to) {
         try {
-            // Large amount relative to this account's recent transaction history --
-            // matches the OTP-fraud pattern of draining an account in one large transfer.
             Transaction txn = bank.initiateTransfer(
                     from.getAccountNumber(), to.getAccountNumber(), 30000.0, "device-unknown-scammer");
 
             String code = bank.peekOtpForDemo(txn.getTransactionId());
             bank.verifyAndComplete(txn.getTransactionId(), code);
-            // Transaction completes (the OTP itself was valid) but will be
-            // flagged asynchronously by the FraudDetectionEngine thread.
         } catch (InvalidOTPException | OTPExpiredException | OTPLockedException | InsufficientFundsException e) {
             BankLogger.warn("Suspicious transfer failed verification: " + e.getMessage());
         }
@@ -108,7 +88,7 @@ public class Main {
             t.start();
         }
 
-        latch.await(); // wait for all 5 threads to finish before checking final balance
+        latch.await(); 
         System.out.println("Balance after concurrent withdrawals (never goes negative): " + target.getBalance());
     }
 
@@ -122,8 +102,6 @@ public class Main {
         String outFile = "data/" + account.getAccountNumber() + "_history.enc";
         encryptionUtil.encryptToFile(sb.toString(), outFile);
         System.out.println("Encrypted history written to " + outFile);
-
-        // Prove it round-trips correctly.
         String decrypted = encryptionUtil.decryptFromFile(outFile);
         System.out.println("Decrypted content check:\n" + decrypted);
     }
