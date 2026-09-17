@@ -1,9 +1,4 @@
 package com.securebank.model;
-
-/**
- * Represents a bank customer.
- * Demonstrates basic encapsulation (private fields + public getters/setters).
- */
 public class User {
     private String userId;
     private String name;
