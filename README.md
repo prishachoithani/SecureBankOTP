@@ -92,19 +92,19 @@ fraud detection engine to identify.
 - A human-readable activity log records system activity.
 - The database is file-based, so no separate database server is required.
 
----
+
 
 ## Technologies / Tools Used
 
 - **Java 17+** — core programming language.
 - **JDBC** — database connectivity.
 - **SQLite** — file-based database for transaction and fraud-alert records.
-- **`java.util.concurrent`** — multithreading and concurrency.
-  - `ScheduledExecutorService` — scheduled OTP expiry.
+- **java.util.concurrent** — multithreading and concurrency.
+  - ScheduledExecutorService — scheduled OTP expiry.
   - `BlockingQueue` — communication between transactions and fraud detection.
   - `ConcurrentHashMap` — thread-safe data management.
   - `CountDownLatch` — coordination during concurrency testing.
-- **`javax.crypto`** — AES encryption using the standard Java JDK.
+- **javax.crypto** — AES encryption using the standard Java JDK.
 - **SQLite JDBC driver** — allows Java to communicate with the SQLite database.
 
 The project does not use a Java framework.
