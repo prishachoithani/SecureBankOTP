@@ -1,5 +1,4 @@
 package com.securebank.model;
-
 import com.securebank.exceptions.InsufficientFundsException;
 import java.util.ArrayList;
 import java.util.Collections;
