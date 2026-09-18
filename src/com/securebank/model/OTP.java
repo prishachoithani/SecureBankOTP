@@ -10,7 +10,6 @@ public class OTP {
     private int attemptsRemaining;
     private volatile boolean expired = false;
     private volatile boolean consumed = false;
-
     private static final SecureRandom RNG = new SecureRandom();
 
     public OTP(String transactionId, int validitySeconds, int maxAttempts) {
