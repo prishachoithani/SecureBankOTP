@@ -224,7 +224,7 @@ including the normal transfer, suspicious transaction/fraud detection,
 concurrency test and encrypted export.
 
 ```text
-[ INSERT PROGRAM OUTPUT SCREENSHOT HERE ]
+
 ```
 
 ---
@@ -295,7 +295,6 @@ main parts of the project.
 | **Concurrency stress test** | Five threads withdraw simultaneously from one account; the final balance demonstrates that no double-spend or negative balance occurs |
 | **Encrypted export** | AES round-trip: data is encrypted to disk, decrypted back, and the content matches the original |
 
----
 
 ## Test 1: Legitimate Transfer
 
