@@ -1,6 +1,7 @@
 package com.securebank.fraud;
 
 import java.time.LocalDateTime;
+
 public class FraudAlert {
     private final String transactionId;
     private final String ruleTriggered;
