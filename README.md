@@ -9,7 +9,7 @@ out a one-time password and uses it to authorize an unauthorized transfer.
 
 
 
-# Security Model
+# Overview
  
 Every transfer passes a mandatory two-stage gate before it is finalised.
  
@@ -30,7 +30,7 @@ A rule match raises an alert and records it in the audit log.
 The project reproduces a known OTP-fraud pattern — a small legitimate transfer followed by an unusually large one from the same account — providing a realistic suspicious transaction for the engine to detect.
 
 
-### Features
+# Features
 
 * **OTP Lifecycle Management:** Generates unique OTPs for each transaction, with automatic expiry and single-use validation. Verification is synchronized for concurrent requests and expiry is managed using `ScheduledExecutorService`.
 
@@ -45,7 +45,7 @@ The project reproduces a known OTP-fraud pattern — a small legitimate transfer
 
 
 
-## Technologies / Tools Used
+# Technologies / Tools Used
 
 - **Java 17+** — core programming language.
 - **JDBC** — database connectivity.
@@ -62,7 +62,7 @@ The project does not use a Java framework.
 
 
 
-## Project Structure
+# Project Structure
 
 ```text
 SecureBankOTP/
@@ -154,21 +154,7 @@ java -cp "out;lib/*" Main
 
 
 
-## What Should Happen When You Run It?
-
-The program demonstrates several different situations:
-
-- Creates and sets up an account.
-- Generates and verifies an OTP.
-- Performs a normal/legitimate transfer.
-- Performs a suspiciously large transfer.
-- Runs the fraud detection engine in the background.
-- Runs the concurrency stress test using five threads.
-- Creates an encrypted transaction history file.
-
-
-
-## Screenshot of Program Output
+# Screenshot of Program Output
 
 <img width="2512" height="1418" alt="Screenshot 2026-09-17 104359" src="https://github.com/user-attachments/assets/f000b31f-af0d-47d0-886a-a65476d98709" />
 <img width="2038" height="592" alt="Screenshot 2026-09-17 104421" src="https://github.com/user-attachments/assets/494d9139-5739-4d43-97a3-45e22a8cac8e" />
