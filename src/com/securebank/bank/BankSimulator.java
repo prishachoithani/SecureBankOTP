@@ -15,7 +15,6 @@ public class BankSimulator {
 
     private final Map<String, Account> accounts = new ConcurrentHashMap<>();
     private final Map<String, Transaction> pendingTransactions = new ConcurrentHashMap<>();
-
     private final OTPManager otpManager = new OTPManager();
     private final AuditDAO auditDAO = new AuditDAO();
     private final FraudDetectionEngine fraudEngine;
