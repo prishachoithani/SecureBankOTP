@@ -1,5 +1,4 @@
 package com.securebank.fraud;
-
 import com.securebank.model.Account;
 import com.securebank.model.Transaction;
 import com.securebank.persistence.AuditDAO;
