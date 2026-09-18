@@ -222,11 +222,6 @@ The program demonstrates several different situations:
 <img width="2512" height="1418" alt="Screenshot 2026-09-17 104359" src="https://github.com/user-attachments/assets/f000b31f-af0d-47d0-886a-a65476d98709" />
 <img width="2038" height="592" alt="Screenshot 2026-09-17 104421" src="https://github.com/user-attachments/assets/494d9139-5739-4d43-97a3-45e22a8cac8e" />
 
-```text
-
-```
-
-
 
 # Generated Output Files
 
