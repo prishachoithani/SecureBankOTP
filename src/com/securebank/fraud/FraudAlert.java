@@ -4,7 +4,6 @@ public class FraudAlert {
     private final String transactionId;
     private final String ruleTriggered;
     private final LocalDateTime raisedAt;
-
     public FraudAlert(String transactionId, String ruleTriggered) {
         this.transactionId = transactionId;
         this.ruleTriggered = ruleTriggered;
