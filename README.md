@@ -6,7 +6,7 @@ model (and defend against) the real-world problem of **OTP-based
 account-draining fraud**, where a scammer tricks a victim into reading
 out a one-time password and uses it to authorize an unauthorized transfer.
 
-> Built for CSE2006 (Programming in Java), VIT Bhopal.
+
 
 ---
 
