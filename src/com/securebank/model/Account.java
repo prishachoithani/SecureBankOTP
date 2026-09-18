@@ -9,7 +9,6 @@ public class Account {
     private final User owner;
     private double balance;
     private final List<Transaction> history;
-
     private double averageTransactionAmount = 0.0;
     private int transactionCount = 0;
 
