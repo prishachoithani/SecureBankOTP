@@ -22,7 +22,7 @@ public class FraudDetectionEngine extends Thread {
         this.accountRegistry = accountRegistry;
         this.auditDAO = auditDAO;
 
-        // Default rule set -- easy to extend with more FraudRule implementations.
+
         rules.add(new HighAmountRule(3.0));
         rules.add(new RapidTransactionRule(20, 3));
     }
