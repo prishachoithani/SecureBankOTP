@@ -9,89 +9,38 @@ out a one-time password and uses it to authorize an unauthorized transfer.
 
 
 
-
-## Overview
-
-Every transfer in this system must clear a two-step gate before funds
-move:
-
+## Security Model
+ 
+Every transfer passes a mandatory two-stage gate before it is finalised.
+ 
 ### 1. OTP Verification
-
-A 6-digit, time-bound, single-use code is issued for every transaction.
-
-The OTP:
-
-- Is generated for each transaction.
-- Is valid only for a limited amount of time.
-- Can only be used once.
-- Is automatically expired by a background thread.
-- Uses synchronized consumption so that the same OTP cannot be successfully
-  used multiple times, even under concurrent verification attempts.
-
+ 
+Each transaction is bound to a unique six-digit one-time password that is time-bound and single-use. A background thread expires stale codes, and consumption is synchronized so the same OTP cannot succeed twice under concurrent verification attempts.
+ 
 ### 2. Fraud Screening
-
-After a transaction is completed, it is processed by a separate background
-fraud-detection thread.
-
-The fraud engine checks completed transactions against implemented rules,
-including:
-
-- An unusually high transfer amount compared to the account's previous
-  transaction history.
-- Rapid consecutive transfers happening within a short period.
-
-If a transaction matches a fraud rule, an alert is generated and recorded
-in the audit logs.
-
-The project deliberately models the OTP-fraud attack pattern by performing
-a small legitimate transfer followed by an unusually large transfer from
-the same account. This provides a realistic suspicious transaction for the
-fraud detection engine to identify.
+ 
+Completed transactions are reviewed asynchronously by a background fraud-detection engine, keeping analysis off the transfer path. Current rules flag:
+ 
+- **Anomalous amount** — the transfer deviates sharply from the account's transaction history.
+- **Rapid consecutive transfers** — multiple transfers from one account within a short window.
+A rule match raises an alert and records it in the audit log.
+ 
+### Demonstration Scenario
+ 
+The project reproduces a known OTP-fraud pattern — a small legitimate transfer followed by an unusually large one from the same account — providing a realistic suspicious transaction for the engine to detect.
 
 
+### Features
 
-## Features
+* **OTP Lifecycle Management:** Generates unique OTPs for each transaction, with automatic expiry and single-use validation. Verification is synchronized for concurrent requests and expiry is managed using `ScheduledExecutorService`.
 
-### OTP Lifecycle Management
+* **Thread-Safe Transfers:** Ensures synchronized balance updates and consistent lock ordering to prevent concurrency issues, double spending, and account overdrafts.
 
-- Generates a new OTP for each transaction.
-- OTPs expire automatically after a fixed period.
-- An OTP cannot be used more than once.
-- OTP verification is synchronized to safely handle concurrent verification
-  attempts.
-- OTP expiry is handled in the background using `ScheduledExecutorService`.
+* **Concurrent Fraud Detection:** Processes completed transactions asynchronously through a `BlockingQueue`, allowing fraud detection to run independently without blocking transactions.
 
-### Thread-Safe Transfers
+* **Encrypted Transaction History:** Exports transaction history securely using AES encryption through Java’s built-in `javax.crypto` package.
 
-- Account balance updates are synchronized.
-- Locks are acquired in a consistent order to avoid concurrency problems.
-- Concurrent transfers are handled safely.
-- The project includes a stress test where five threads attempt to withdraw
-  money from the same account simultaneously.
-- The test checks that the account cannot be overdrawn or spend the same
-  money twice.
-
-### Concurrent Fraud Detection
-
-- Fraud detection runs separately from the transaction itself.
-- Completed transactions are placed into a `BlockingQueue`.
-- A dedicated background thread consumes transactions from the queue.
-- Transactions are checked using the implemented `FraudRule` classes.
-- The fraud detection process does not block the main transfer path.
-
-### Encrypted Transaction History
-
-- Transaction history can be exported in encrypted form.
-- AES encryption is used to protect exported account history.
-- Encryption uses Java's built-in `javax.crypto` package.
-- No external encryption library is required.
-
-### Persistent Audit Trail
-
-- Transaction information is stored in a SQLite database using JDBC.
-- Fraud alerts are also stored in the SQLite database.
-- A human-readable activity log records system activity.
-- The database is file-based, so no separate database server is required.
+* **Persistent Audit Trail:** Stores transactions and fraud alerts in a file-based SQLite database using JDBC, along with a human-readable activity log.
 
 
 
