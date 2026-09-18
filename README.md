@@ -49,6 +49,7 @@ the same account. This provides a realistic suspicious transaction for the
 fraud detection engine to identify.
 
 
+
 ## Features
 
 ### OTP Lifecycle Management
@@ -94,6 +95,7 @@ fraud detection engine to identify.
 
 
 
+
 ## Technologies / Tools Used
 
 - **Java 17+** — core programming language.
@@ -108,6 +110,7 @@ fraud detection engine to identify.
 - **SQLite JDBC driver** — allows Java to communicate with the SQLite database.
 
 The project does not use a Java framework.
+
 
 
 ## Project Structure
@@ -130,6 +133,7 @@ SecureBankOTP/
 ├── README.md                      # Project documentation
 └── statement.md                   # Project statement
 ```
+
 
 
 # Installation & Running
@@ -221,6 +225,8 @@ The program demonstrates several different situations:
 <img width="2038" height="592" alt="Screenshot 2026-09-17 104421" src="https://github.com/user-attachments/assets/494d9139-5739-4d43-97a3-45e22a8cac8e" />
 
 
+
+
 # Generated Output Files
 
 After the program finishes, the following files can be checked.
@@ -262,6 +268,8 @@ data/ACC1001_history.enc
 ```
 
 This file contains the AES-encrypted transaction history.
+
+
 
 
 # Instructions for Testing
@@ -382,6 +390,8 @@ data/ACC1001_history.enc
 ```
 
 The test verifies that the decrypted content matches the original content.
+
+
 
 
 # Purpose of the Project
