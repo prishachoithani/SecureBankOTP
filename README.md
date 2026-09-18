@@ -219,9 +219,10 @@ The program demonstrates several different situations:
 
 **Insert a screenshot of the successful console output here.**
 
-The screenshot should preferably show the major stages of the program,
-including the normal transfer, suspicious transaction/fraud detection,
-concurrency test and encrypted export.
+<img width="2512" height="1418" alt="Screenshot 2026-09-17 104359" src="https://github.com/user-attachments/assets/f000b31f-af0d-47d0-886a-a65476d98709" />
+<img width="2038" height="592" alt="Screenshot 2026-09-17 104421" src="https://github.com/user-attachments/assets/494d9139-5739-4d43-97a3-45e22a8cac8e" />
+
+
 
 ```text
 
@@ -270,17 +271,6 @@ data/ACC1001_history.enc
 ```
 
 This file contains the AES-encrypted transaction history.
-
-
-
-## Screenshot of Generated Files
-
-**Optional: Insert a screenshot showing the generated files here.**
-
-```text
-[ INSERT SCREENSHOT OF data/ FOLDER HERE ]
-```
-
 
 
 # Instructions for Testing
@@ -432,65 +422,6 @@ and the database:
 data/securebank.db
 ```
 
-
-
-## Screenshot of Testing / Results
-
-**Optional: Insert a screenshot showing the testing results here.**
-
-```text
-[ INSERT TEST RESULTS SCREENSHOT HERE ]
-```
-
----
-
-# OTP Demonstration Note
-
-There is a method called:
-
-```java
-peekOtpForDemo()
-```
-
-in `BankSimulator`.
-
-This exists only because this is a simulation and there is no actual SMS
-or notification service connected to the project.
-
-It allows the demo program to get the OTP and continue the transaction flow.
-
-In a real banking application, the OTP would be sent to the user's
-registered device through a secure delivery service and would not be exposed
-through a method like this.
-
-
-
-# Database
-
-SQLite is used because it keeps the project simple to run.
-
-There is no separate database server that needs to be installed or started.
-The database is stored as a file inside the `data` directory.
-
-The database location is:
-
-```text
-data/securebank.db
-```
-
-The database contains transaction and fraud-alert records.
-
-It can be opened using any SQLite database browser or the SQLite command-line
-tool.
-
-Example:
-
-```bash
-sqlite3 data/securebank.db
-```
-
-
-
 # Purpose of the Project
 
 This project was mainly built to understand how different Java concepts work
@@ -510,13 +441,5 @@ In particular, it demonstrates:
 
 The project is a simulation for learning purposes and is **not intended to
 be used as an actual banking system**.
-
-
-
-# Project Demonstration Screenshot
-
-**Optional: Add a final screenshot showing the complete successful run.**
-
-```text
 [ INSERT FINAL PROJECT SCREENSHOT HERE ]
 ```
