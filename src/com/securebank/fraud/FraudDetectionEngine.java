@@ -10,7 +10,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class FraudDetectionEngine extends Thread {
-
     private final BlockingQueue<Transaction> incomingTransactions = new LinkedBlockingQueue<>();
     private final List<FraudRule> rules = new ArrayList<>();
     private final Map<String, Account> accountRegistry;
