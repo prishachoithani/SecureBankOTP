@@ -187,9 +187,6 @@ transactions
 fraud_alerts
 ```
 
-It can be opened with any SQLite database browser or the SQLite command-line
-tool.
-
 ### Encrypted Transaction History
 
 ```text
