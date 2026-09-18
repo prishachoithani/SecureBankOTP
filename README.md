@@ -1,125 +1,134 @@
 # SecureBank OTP — Fraud-Resilient Transaction Simulator
 
-A Java simulation of a bank's OTP-verified money transfer system with a
-concurrent, rule-based fraud detection engine layered on top — built to
-model (and defend against) the real-world problem of **OTP-based
-account-draining fraud**, where a scammer tricks a victim into reading
-out a one-time password and uses it to authorize an unauthorized transfer.
+A Java-based simulation of a bank's OTP-verified money transfer system with a
+concurrent, rule-based fraud detection engine layered on top.
 
-> Built for CSE2006 (Programming in Java), VIT Bhopal.
+The project models the real-world problem of **OTP-based account-draining
+fraud**, where a scammer may trick a victim into revealing a one-time password
+and then attempt to use it to authorize an unauthorized transfer.
+
+
+
+---
 
 ## Overview
 
-Every transfer in this system must clear a two-step gate before funds
-move:
+SecureBank OTP simulates a banking transaction system where every transfer
+must pass through two main stages before the transaction is completed.
 
-1. **OTP verification** — a 6-digit, time-bound, single-use code, issued
-   per transaction and auto-expired by a background thread.
-2. **Fraud screening** — a background thread that inspects every
-   completed transaction against a set of pluggable rules (unusually
-   high amount relative to the account's history, rapid consecutive
-   transfers) and raises an audit-logged alert if any rule fires.
+### 1. OTP Verification
 
-The project deliberately models the OTP-fraud attack pattern — a small
-legitimate transfer followed by an unusually large one on the same
-account — so the fraud engine has something real to catch.
+A 6-digit OTP is generated for every transaction.
+
+The OTP:
+
+- Is valid only for a limited amount of time.
+- Can be used only once.
+- Automatically expires in the background.
+- Uses synchronized verification so that multiple threads cannot successfully
+  consume the same OTP.
+
+### 2. Fraud Detection
+
+After a transaction is successfully completed, it is placed into a queue and
+processed by a separate background fraud-detection thread.
+
+The fraud detection engine checks transactions against implemented rules such
+as:
+
+- A transfer that is unusually large compared to the account's previous
+  transaction history.
+- Multiple transfers happening very quickly one after another.
+
+If a transaction matches a fraud rule, an alert is generated and recorded in
+the audit logs.
+
+For the demonstration, the program first performs a normal transaction and
+then performs a much larger transaction from the same account. This provides
+a suspicious transaction for the fraud detection system to identify.
+
+---
 
 ## Features
 
-- **OTP lifecycle management** — codes are generated, time-limited, and
-  auto-expired using `ScheduledExecutorService`; consumption is
-  synchronized so a code can never be used twice, even under concurrent
-  verification attempts.
-- **Thread-safe transfers** — account balance updates are synchronized
-  with consistent lock ordering, so concurrent transfers can never
-  double-spend or push a balance negative (proven by an included stress
-  test that fires 5 simultaneous withdrawal threads at one account).
-- **Concurrent fraud detection** — a dedicated background thread
-  consumes completed transactions from a `BlockingQueue` and applies a
-  strategy-pattern set of `FraudRule` implementations without blocking
-  the transfer path.
-- **Encrypted transaction history** — AES encryption (JDK's built-in
-  `javax.crypto`, no external dependency) protects exported account
-  history files at rest.
-- **Persistent audit trail** — all transactions and fraud alerts are
-  written to a SQLite database via JDBC, plus a human-readable activity
-  log file.
+### OTP Lifecycle Management
+
+- Generates a new 6-digit OTP for every transaction.
+- OTPs automatically expire after a fixed period.
+- An OTP can only be consumed once.
+- OTP verification is synchronized to safely handle concurrent verification
+  attempts.
+- OTP expiry is handled in the background using `ScheduledExecutorService`.
+
+### Thread-Safe Transactions
+
+- Account balance updates are synchronized.
+- Locks are acquired in a consistent order to reduce concurrency problems.
+- Multiple threads can attempt transactions concurrently.
+- The project includes a stress test where five threads attempt to withdraw
+  money from the same account simultaneously.
+- The test checks that the account does not become negative or spend the same
+  balance twice.
+
+### Concurrent Fraud Detection
+
+- Fraud detection runs separately from the main transaction process.
+- Completed transactions are placed into a `BlockingQueue`.
+- A dedicated background thread consumes transactions from the queue.
+- Transactions are checked using the implemented `FraudRule` classes.
+- Fraud detection does not block the main transfer process.
+
+### Encrypted Transaction History
+
+- Transaction history can be exported in encrypted form.
+- AES encryption is used to protect exported transaction history.
+- Encryption uses Java's built-in `javax.crypto` package.
+- No separate encryption library is required for AES encryption.
+
+### Database and Audit Logging
+
+- Transaction information is stored in a SQLite database using JDBC.
+- Fraud alerts are also stored in the database.
+- A human-readable activity log records system activity.
+- The database is file-based, so no separate database server is required.
+
+---
 
 ## Technologies / Tools Used
 
-- Java 17+ (core language, no framework)
-- JDBC with [SQLite](https://github.com/xerial/sqlite-jdbc) (file-based,
-  zero-config database)
-- `java.util.concurrent` (`ScheduledExecutorService`, `BlockingQueue`,
-  `ConcurrentHashMap`, `CountDownLatch`)
-- `javax.crypto` (AES encryption, part of the standard JDK)
+| Technology / Tool | Purpose |
+|---|---|
+| **Java 17+** | Main programming language |
+| **JDBC** | Database connectivity |
+| **SQLite** | Persistent storage for transactions and fraud alerts |
+| **java.util.concurrent** | Multithreading and concurrency |
+| `ScheduledExecutorService` | Background OTP expiry |
+| `BlockingQueue` | Communication between transactions and fraud detection |
+| `ConcurrentHashMap` | Thread-safe data management |
+| `CountDownLatch` | Coordination in concurrency testing |
+| **javax.crypto** | AES encryption |
+| **JDK standard libraries** | Core functionality |
+
+The project does not use a Java framework.
+
+---
 
 ## Project Structure
 
-```
-src/com/securebank/
-├── Main.java                      # demo driver / entry point
-├── model/                         # User, Account, Transaction, OTP
-├── exceptions/                    # custom checked exceptions
-├── otp/                           # OTPManager (issues OTPs, schedules their expiry)
-├── fraud/                         # FraudRule + 2 implementations, FraudDetectionEngine (threaded)
-├── security/                      # EncryptionUtil (AES)
-├── persistence/                   # DatabaseManager, AuditDAO (JDBC)
-├── bank/                          # BankSimulator (orchestrator)
-└── util/                          # BankLogger
-```
-
-## Steps to Install & Run
-
-**Requirements:** JDK 17 or later.
-
-1. Download the SQLite JDBC driver jar and place it in a `lib/` folder
-   in the project root:
-   [sqlite-jdbc-3.36.0.3.jar](https://github.com/xerial/sqlite-jdbc/releases/download/3.36.0.3/sqlite-jdbc-3.36.0.3.jar)
-   *(any recent sqlite-jdbc release works; this version was used for
-   testing because it has no extra runtime dependencies.)*
-
-2. Compile:
-   ```bash
-   javac -cp "lib/sqlite-jdbc.jar" -d out $(find src -name "*.java")
-   ```
-
-3. Run:
-   ```bash
-   java -cp "out:lib/sqlite-jdbc.jar" com.securebank.Main
-   ```
-   *(On Windows, use `;` instead of `:` in the classpath.)*
-
-4. Check the output:
-   - Console shows the full run: account setup, a legitimate transfer,
-     a suspicious transfer that gets fraud-flagged, a 5-thread
-     concurrency stress test, and an encrypted export.
-   - `data/bank_activity.log` — full timestamped activity log.
-   - `data/securebank.db` — SQLite database with `transactions` and
-     `fraud_alerts` tables (open with any SQLite browser, or `sqlite3
-     data/securebank.db`).
-   - `data/ACC1001_history.enc` — AES-encrypted transaction history.
-
-## Instructions for Testing
-
-The included `Main.java` doubles as an integration test, exercising:
-
-| Scenario | What it proves |
-|---|---|
-| Legitimate transfer | Correct OTP → funds move, transaction logged, no fraud flag |
-| Suspicious transfer (unusually large amount) | Fraud engine correctly flags a valid-but-suspicious transaction asynchronously, without blocking it |
-| Concurrency stress test | 5 threads withdraw simultaneously from the same account; final balance proves no double-spend or negative balance occurred |
-| Encrypted export | AES round-trip: encrypt to disk, decrypt back, content matches |
-
-To add your own test cases, call `BankSimulator.initiateTransfer(...)`
-and `verifyAndComplete(...)` with different amounts and inspect
-`data/bank_activity.log` for the fraud engine's verdict.
-
-## Notes
-
-- `peekOtpForDemo()` on `BankSimulator` is a **demo-only** stand-in for
-  an SMS/push notification gateway — a real deployment would never
-  expose the OTP to a caller; it would only leave the server via the
-  delivery channel.
-- The database is file-based (SQLite) specifically so this project runs
-  standalone with zero setup — no server to install or start.
+```text
+SecureBankOTP/
+├── diagrams/                      # Project design diagrams
+├── lib/
+│   └── sqlite-jdbc.jar            # SQLite JDBC driver
+├── src/com/securebank/
+│   ├── bank/                      # Bank simulation logic
+│   ├── exceptions/                # Custom exceptions
+│   ├── fraud/                     # Fraud detection rules and engine
+│   ├── model/                     # User, Account, Transaction and OTP models
+│   ├── otp/                       # OTP generation, verification and expiry
+│   ├── persistence/               # SQLite database and audit classes
+│   ├── security/                  # AES encryption utilities
+│   └── util/                      # Logging utilities
+├── Main.java                      # Program entry point / demonstration
+├── README.md                      # Project documentation
+└── statement.md                   # Project statement
