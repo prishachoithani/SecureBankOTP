@@ -27,7 +27,7 @@ public class FraudDetectionEngine extends Thread {
         rules.add(new RapidTransactionRule(20, 3));
     }
 
-    /** Called by the transaction pipeline to submit a completed transaction for screening. */
+
     public void submit(Transaction transaction) {
         incomingTransactions.offer(transaction);
     }
