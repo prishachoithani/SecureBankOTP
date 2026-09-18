@@ -190,12 +190,6 @@ fraud_alerts
 It can be opened with any SQLite database browser or the SQLite command-line
 tool.
 
-For example:
-
-```bash
-sqlite3 data/securebank.db
-```
-
 ### Encrypted Transaction History
 
 ```text
