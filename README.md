@@ -9,7 +9,7 @@ out a one-time password and uses it to authorize an unauthorized transfer.
 
 
 
-## Security Model
+# Security Model
  
 Every transfer passes a mandatory two-stage gate before it is finalised.
  
