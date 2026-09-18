@@ -48,7 +48,6 @@ a small legitimate transfer followed by an unusually large transfer from
 the same account. This provides a realistic suspicious transaction for the
 fraud detection engine to identify.
 
----
 
 ## Features
 
