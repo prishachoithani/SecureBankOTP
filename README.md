@@ -109,7 +109,6 @@ fraud detection engine to identify.
 
 The project does not use a Java framework.
 
----
 
 ## Project Structure
 
@@ -132,7 +131,6 @@ SecureBankOTP/
 └── statement.md                   # Project statement
 ```
 
----
 
 # Installation & Running
 
