@@ -101,9 +101,9 @@ fraud detection engine to identify.
 - **SQLite** — file-based database for transaction and fraud-alert records.
 - **java.util.concurrent** — multithreading and concurrency.
   - ScheduledExecutorService — scheduled OTP expiry.
-  - `BlockingQueue` — communication between transactions and fraud detection.
-  - `ConcurrentHashMap` — thread-safe data management.
-  - `CountDownLatch` — coordination during concurrency testing.
+  - BlockingQueue — communication between transactions and fraud detection.
+  - ConcurrentHashMap — thread-safe data management.
+  - CountDownLatch — coordination during concurrency testing.
 - **javax.crypto** — AES encryption using the standard Java JDK.
 - **SQLite JDBC driver** — allows Java to communicate with the SQLite database.
 
