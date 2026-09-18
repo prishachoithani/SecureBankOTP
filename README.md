@@ -386,35 +386,6 @@ data/ACC1001_history.enc
 The test verifies that the decrypted content matches the original content.
 
 
-
-## Running Custom Test Cases
-
-To add your own test cases, call:
-
-```java
-BankSimulator.initiateTransfer(...)
-```
-
-and:
-
-```java
-verifyAndComplete(...)
-```
-
-with different transaction amounts and transaction details.
-
-The resulting fraud detection activity can be inspected in:
-
-```text
-data/bank_activity.log
-```
-
-and the database:
-
-```text
-data/securebank.db
-```
-
 # Purpose of the Project
 
 This project was mainly built to understand how different Java concepts work
@@ -432,7 +403,4 @@ In particular, it demonstrates:
 - AES encryption.
 - Logging and audit records.
 
-The project is a simulation for learning purposes and is **not intended to
-be used as an actual banking system**.
-[ INSERT FINAL PROJECT SCREENSHOT HERE ]
-```
+
