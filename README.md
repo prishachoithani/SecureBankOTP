@@ -149,7 +149,7 @@ lib/sqlite-jdbc.jar
 
 No separate SQLite database server is required.
 
----
+
 
 ## Step 1: SQLite JDBC Driver
 
@@ -163,7 +163,7 @@ lib/sqlite-jdbc.jar
 Therefore, there is no need to download or install a separate database
 server.
 
----
+
 
 ## Step 2: Compile the Project
 
@@ -183,7 +183,7 @@ driver in the `lib` directory.
 The important point is that Windows uses `;` instead of `:` as the
 classpath separator.
 
----
+
 
 ## Step 3: Run the Project
 
@@ -199,7 +199,7 @@ java -cp "out:lib/*" Main
 java -cp "out;lib/*" Main
 ```
 
----
+
 
 ## What Should Happen When You Run It?
 
@@ -213,7 +213,7 @@ The program demonstrates several different situations:
 - Runs the concurrency stress test using five threads.
 - Creates an encrypted transaction history file.
 
----
+
 
 ## Screenshot of Program Output
 
@@ -227,7 +227,7 @@ concurrency test and encrypted export.
 
 ```
 
----
+
 
 # Generated Output Files
 
@@ -271,7 +271,7 @@ data/ACC1001_history.enc
 
 This file contains the AES-encrypted transaction history.
 
----
+
 
 ## Screenshot of Generated Files
 
@@ -281,7 +281,7 @@ This file contains the AES-encrypted transaction history.
 [ INSERT SCREENSHOT OF data/ FOLDER HERE ]
 ```
 
----
+
 
 # Instructions for Testing
 
@@ -317,7 +317,7 @@ Transaction logged
 The transaction should complete successfully without triggering the
 implemented suspicious-transaction rules.
 
----
+
 
 ## Test 2: Suspicious Transfer
 
@@ -358,7 +358,7 @@ table inside:
 data/securebank.db
 ```
 
----
+
 
 ## Test 3: Concurrency Stress Test
 
@@ -374,7 +374,7 @@ This test demonstrates that synchronized account operations prevent:
 The final account balance shown by the program can be used to verify the
 result.
 
----
+
 
 ## Test 4: Encrypted Export
 
@@ -402,7 +402,7 @@ data/ACC1001_history.enc
 
 The test verifies that the decrypted content matches the original content.
 
----
+
 
 ## Running Custom Test Cases
 
@@ -432,7 +432,7 @@ and the database:
 data/securebank.db
 ```
 
----
+
 
 ## Screenshot of Testing / Results
 
@@ -463,7 +463,7 @@ In a real banking application, the OTP would be sent to the user's
 registered device through a secure delivery service and would not be exposed
 through a method like this.
 
----
+
 
 # Database
 
@@ -489,7 +489,7 @@ Example:
 sqlite3 data/securebank.db
 ```
 
----
+
 
 # Purpose of the Project
 
@@ -511,7 +511,7 @@ In particular, it demonstrates:
 The project is a simulation for learning purposes and is **not intended to
 be used as an actual banking system**.
 
----
+
 
 # Project Demonstration Screenshot
 
